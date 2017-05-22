@@ -22,5 +22,9 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', view=views.IndexView.as_view(), name='index'),
     url(r'^article/(?P<article_id>\d+)$', view=views.ArticleDetailView.as_view(), name='detail'),
-    url(r'^category/(?P<cate_id>\d+)$', view=views.CategoryView.as_view(), name='category')
+    url(r'^category/(?P<cate_id>\d+)$', view=views.CategoryView.as_view(), name='category'),
+    url(r'^tag/(?P<tag_id>\d+)$', view=views.TagView.as_view(), name='tag'),
+    url(r'^archive/(?P<year>\d+)/(?P<month>\d+)$', view=views.ArchiveView.as_view(), name='archive'),
+    url(r'^article/(?P<article_id>\d+)/comment/$', view=views.CommentPostView.as_view(), name='comment'),
+    #url(r'^about/', view=views.About.as_view(), name='about')
 ]
