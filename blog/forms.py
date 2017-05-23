@@ -1,5 +1,5 @@
 from django import forms
-from blog.models import Article, BlogComment
+from blog.models import Article, BlogComment, Contact
 
 
 class BlogCommentForm(forms.ModelForm):
@@ -22,4 +22,17 @@ class BlogCommentForm(forms.ModelForm):
                 'aria-describedby': 'sizing-addon1',
             }),
             'body': forms.Textarea(attrs={'id': 'id_text', 'placeholder': '说几句吧~'}),
+        }
+
+class ContactForm(forms.ModelForm):
+
+    class Meta:
+
+        model = Contact
+        fields = ['user_name', 'user_email', 'title', 'body']
+        widgets = {
+            'user_name': forms.TextInput(attrs={'placeholder': 'Name'}),
+            'user_email': forms.TextInput(attrs={'placeholder': 'Email'}),
+            'title': forms.TextInput(attrs={'placeholder': 'Title'}),
+            'body': forms.Textarea(attrs={'placeholder': 'Your Message'})
         }

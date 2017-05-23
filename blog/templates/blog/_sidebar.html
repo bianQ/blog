@@ -1,0 +1,46 @@
+<aside class="col-md-4">
+    <div class="widget widget-recent-posts">
+        <h3 class="widget-title">Recent Posts</h3>
+        <ul>
+            {% for post in recent_posts %}
+            <li>
+                <a href="{% url 'detail' post.id %}">{{ post.title }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="widget widget-archives">
+        <h3 class="widget-title">Archives</h3>
+        <ul>
+            {% for year, month_list in date_archive %}
+            <li>
+                <span>{{ year }} 年</span>
+                {% for month in month_list %}
+                <a href="{% url 'archive' year month %}" style="display: none;" value="hide"><p>{{ month }} 月</p></a>
+            </li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="widget widget-category">
+        <h3 class="widget-title">Category</h3>
+        <ul>
+            {% for category in category_list %}
+            <li>
+                <a href="{% url 'category' category.id %}">{{ category.name }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="widget widget-tag-cloud">
+        <h3 class="widget-title">标签云</h3>
+        <ul>
+            {% for tag in tag_list %}
+                <li>
+                    <a href="{% url 'tag' tag.id %}">{{ tag }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</aside>

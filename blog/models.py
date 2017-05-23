@@ -41,7 +41,7 @@ class Article(models.Model):
         return  self.title
 
     class Meta:
-        ordering = ['-last_modified_time']
+        ordering = ['-last_modified_time', '-created_time']
 
     def get_absolute_url(self):
         return reverse('detail', kwargs={'article_id': self.pk})
@@ -75,3 +75,12 @@ class BlogComment(models.Model):
     def __str__(self):
         return self.body[:20]
 
+class Contact(models.Model):
+
+    user_name = models.CharField('联系者名字', max_length=200)
+    user_email = models.EmailField('联系者邮箱', max_length=200)
+    title = models.CharField('标题', max_length=60)
+    body = models.TextField('内容')
+
+    def __str__(self):
+        return self.title

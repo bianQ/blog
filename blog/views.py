@@ -2,7 +2,7 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from blog.models import Article, Category, Tag
 from django.views.generic.edit import FormView
-from blog.forms import BlogCommentForm
+from blog.forms import BlogCommentForm, ContactForm
 from django.shortcuts import get_object_or_404, HttpResponseRedirect, render
 import markdown2
 
@@ -21,6 +21,7 @@ class IndexView(ListView):
         kwargs['category_list'] = Category.objects.all().order_by('name')
         kwargs['date_archive'] = Article.objects.archive()
         kwargs['tag_list'] = Tag.objects.all().order_by('name')
+        kwargs['recent_posts'] = Article.objects.filter(status='p').order_by(Article._meta.ordering[1])[:3]
         return super(IndexView, self).get_context_data(**kwargs)
 
 class ArticleDetailView(DetailView):
@@ -35,8 +36,14 @@ class ArticleDetailView(DetailView):
         return obj
 
     def get_context_data(self, **kwargs):
+        kwargs['article_tags'] = Tag.objects.filter(article=self.kwargs['article_id'])
         kwargs['comment_list'] = self.object.blogcomment_set.all()
         kwargs['form'] = BlogCommentForm()
+        # 侧边栏显示数据
+        kwargs['category_list'] = Category.objects.all().order_by('name')
+        kwargs['date_archive'] = Article.objects.archive()
+        kwargs['tag_list'] = Tag.objects.all().order_by('name')
+        kwargs['recent_posts'] = Article.objects.filter(status='p').order_by(Article._meta.ordering[1])[:3]
         return super(ArticleDetailView, self).get_context_data(**kwargs)
 
 class CategoryView(ListView):
@@ -51,6 +58,9 @@ class CategoryView(ListView):
 
     def get_context_data(self, **kwargs):
         kwargs['category_list'] = Category.objects.all().order_by('name')
+        kwargs['date_archive'] = Article.objects.archive()
+        kwargs['tag_list'] = Tag.objects.all().order_by('name')
+        kwargs['recent_posts'] = Article.objects.filter(status='p').order_by(Article._meta.ordering[1])[:3]
         return super(CategoryView, self).get_context_data(**kwargs)
 
 class TagView(ListView):
@@ -64,7 +74,10 @@ class TagView(ListView):
         return article_list
 
     def get_context_data(self, **kwargs):
+        kwargs['category_list'] = Category.objects.all().order_by('name')
+        kwargs['date_archive'] = Article.objects.archive()
         kwargs['tag_list'] = Tag.objects.all().order_by('name')
+        kwargs['recent_posts'] = Article.objects.filter(status='p').order_by(Article._meta.ordering[1])[:3]
         return super(TagView, self).get_context_data(**kwargs)
 
 class ArchiveView(ListView):
@@ -81,8 +94,10 @@ class ArchiveView(ListView):
         return article_list
 
     def get_context_data(self, **kwargs):
+        kwargs['category_list'] = Category.objects.all().order_by('name')
         kwargs['tag_list'] = Tag.objects.all().order_by('name')
         kwargs['date_archive'] = Article.objects.archive()
+        kwargs['recent_posts'] = Article.objects.filter(status='p').order_by(Article._meta.ordering[1])[:3]
         return super(ArchiveView, self).get_context_data(**kwargs)
 
 class CommentPostView(FormView):
@@ -105,3 +120,19 @@ class CommentPostView(FormView):
             'article': target_article,
             'comment_list': target_article.blogcomment_set.all(),
         })
+
+def About(request):
+    if request.method == 'GET':
+        return render(request, 'blog/about.html')
+
+class ContactPostView(FormView):
+
+    form_class = ContactForm
+    template_name = 'blog/contact.html'
+
+    def form_valid(self, form):
+        form.save()
+        return HttpResponseRedirect('blog/contact.html')
+
+    def form_invalid(self, form):
+        return render(self.request, 'blog/contact.html', {'form': form})
