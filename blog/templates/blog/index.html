@@ -31,7 +31,7 @@
 							<div class="entry-content clearfix">
 								<p>{{ article.abstract }}</p>
 								<div class="read-more cl-effect-14">
-									<a href="#" class="more-link">More <span class="glyphicon glyphicon-plus"></span></a>
+									<a href="{% url 'detail' article.id %}" class="more-link">More <span class="glyphicon glyphicon-plus"></span></a>
 								</div>
 							</div>
 							{% endfor %}

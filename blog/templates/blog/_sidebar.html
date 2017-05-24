@@ -1,6 +1,6 @@
 <aside class="col-md-4">
     <div class="widget widget-recent-posts">
-        <h3 class="widget-title">Recent Posts</h3>
+        <h3 class="widget-title">最新发布</h3>
         <ul>
             {% for post in recent_posts %}
             <li>
@@ -10,7 +10,7 @@
         </ul>
     </div>
     <div class="widget widget-archives">
-        <h3 class="widget-title">Archives</h3>
+        <h3 class="widget-title">归档</h3>
         <ul>
             {% for year, month_list in date_archive %}
             <li>
@@ -24,7 +24,7 @@
     </div>
 
     <div class="widget widget-category">
-        <h3 class="widget-title">Category</h3>
+        <h3 class="widget-title">分类</h3>
         <ul>
             {% for category in category_list %}
             <li>

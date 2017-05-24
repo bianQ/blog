@@ -21,7 +21,12 @@ class BlogCommentForm(forms.ModelForm):
                 'placeholder': '请输入邮箱',
                 'aria-describedby': 'sizing-addon1',
             }),
-            'body': forms.Textarea(attrs={'id': 'id_text', 'placeholder': '说几句吧~'}),
+            'body': forms.Textarea(attrs={
+                'id': 'id_text',
+                'class': 'from-control',
+
+                'placeholder': '说几句吧~',
+            }),
         }
 
 class ContactForm(forms.ModelForm):

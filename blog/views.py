@@ -136,3 +136,21 @@ class ContactPostView(FormView):
 
     def form_invalid(self, form):
         return render(self.request, 'blog/contact.html', {'form': form})
+
+class AuthorView(ListView):
+    template_name = 'blog/index.html'
+    context_object_name = 'article_list'
+
+    def get_queryset(self):
+        author = self.kwargs['author']
+        article_list = Article.objects.filter(author=author, status='p')
+        for article in article_list:
+            article.body = markdown2.markdown(article.body, extras=['fenced-code-blocks'],)
+        return article_list
+
+    def get_context_data(self, **kwargs):
+        kwargs['category_list'] = Category.objects.all().order_by('name')
+        kwargs['tag_list'] = Tag.objects.all().order_by('name')
+        kwargs['date_archive'] = Article.objects.archive()
+        kwargs['recent_posts'] = Article.objects.filter(status='p').order_by(Article._meta.ordering[1])[:3]
+        return super(AuthorView, self).get_context_data(**kwargs)

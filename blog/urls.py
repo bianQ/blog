@@ -28,4 +28,5 @@ urlpatterns = [
     url(r'^article/(?P<article_id>\d+)/comment/$', view=views.CommentPostView.as_view(), name='comment'),
     url(r'^about/', view=views.About, name='about'),
     url(r'^contact/', view=views.ContactPostView.as_view(), name='contact'),
+    url(r'^(?P<author>\w+)/', view=views.AuthorView.as_view(), name='author'),
 ]

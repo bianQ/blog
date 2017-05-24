@@ -12,13 +12,14 @@
 							<header class="entry-header">
 								<h1 class="entry-title">{{ article.title }}</h1>
 								<div class="entry-meta">
-									<span class="post-category"><a href="#">{{ article.category.name }}</a></span>
+									{% if article.category %}
+									<span class="post-category"><a href="{% url 'category' article.category.id %}">{{ article.category.name }}</a></span>
+									{% endif %}
+									<span class="post-date"><a><time class="entry-date">{{ article.created_time }}</time></a></span>
 			
-									<span class="post-date"><a href="#"><time class="entry-date">{{ article.created_time }}</time></a></span>
+									<span class="post-author"><a href="{% url 'author' article.author %}">{{ article.author }}</a></span>
 			
-									<span class="post-author"><a href="#">{{ article.author }}</a></span>
-			
-									<span class="comments-link"><a href="#">4 Comments</a></span>
+									<span class="comments-link"><a>{{ comment_list|length }} Comments</a></span>
 								</div>
 								<div class="entry-meta widget-tag-cloud">
 									{% for tag in article_tags %}
@@ -50,7 +51,7 @@
 								</div>
 								<div class="form-group">
 									<label for="id_text" class="col-sm-2 control-label">评论：</label>
-									<div class="col-md-9">
+									<div class="col-md-10">
 										{{ form.body }}
 									</div>
 								</div>
@@ -61,18 +62,19 @@
 								</div>
 							</form>
 
-						<div class="comment-list-panel post">
-							<h4>评论列表，共 <span>{{ comment_list|length }}</span> 条评论</h4>
-							<ul class="comment-list list-unstyled">
-								{% for comment in comment_list %}
-								<li class="comment-item">
-									<span class="nickname">{{ comment.user_name }}</span>
-									<time class="submit-date">{{ comment.created_time }}</time>
-									<div class="text">{{ comment.body }}</div>
-								</li>
-								{% endfor %}
-							</ul>
-						</div></section>
+							<div class="comment-list-panel post">
+								<h4>评论列表，共 <span>{{ comment_list|length }}</span> 条评论</h4>
+								<ul class="comment-list list-unstyled">
+									{% for comment in comment_list %}
+									<li class="comment-item">
+										<span class="nickname">{{ comment.user_name }}</span>
+										<time class="submit-date">{{ comment.created_time }}</time>
+										<div class="text">{{ comment.body }}</div>
+									</li>
+									{% endfor %}
+								</ul>
+							</div>
+						</section>
 					</main>
 					{% include 'blog/_sidebar.html' %}
 				</div>
