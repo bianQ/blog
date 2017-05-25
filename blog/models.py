@@ -57,7 +57,7 @@ class Category(models.Model):
 
 class Tag(models.Model):
 
-    name = models.CharField('表桥名', max_length=20)
+    name = models.CharField('标签名', max_length=20)
     created_time = models.DateTimeField('创建时间', auto_now_add=True)
     last_modified_time = models.DateTimeField('修改时间', auto_now=True)
 

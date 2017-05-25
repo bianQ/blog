@@ -12,20 +12,20 @@
 						<article class="post">
 							<header class="entry-header">
 								{% if article_list %}
-								{% paginate article_list 6 %}
+								{% paginate article_list 5 %}
 								{% for article in article_list %}
 
 								<h1 class="entry-title">
 									<a href="{% url 'detail' article.pk %}">{{ article.title }}</a>
 								</h1>
 								<div class="entry-meta">
-									<span class="post-category"><a href="#">{{ article.category.name }}</a></span>
-			
+									{% if article.category %}
+										<span class="post-category"><a href="{% url 'category' article.category.id %}">{{ article.category.name }}</a></span>
+									{% endif %}
 									<span class="post-date"><a href="#"><time class="entry-date">{{ article.created_time |date:"Y年n月d日" }}</time></a></span>
-			
 									<span class="post-author"><a href="#">{{ article.author }}</a></span>
-			
-									<span class="comments-link"><a href="#">4 Comments</a></span>
+									<span class="comments-link"><a href="#">{{ article.blogcomment_set.all|length }}评论</a></span>
+									<span class="views-count"><a href="#">{{ article.views }}阅读</a></span>
 								</div>
 							</header>
 							<div class="entry-content clearfix">

@@ -1,5 +1,6 @@
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
+from django.views.generic.base import TemplateView
 from blog.models import Article, Category, Tag
 from django.views.generic.edit import FormView
 from blog.forms import BlogCommentForm, ContactForm
@@ -18,6 +19,7 @@ class IndexView(ListView):
         return article_list
 
     def get_context_data(self, **kwargs):
+
         kwargs['category_list'] = Category.objects.all().order_by('name')
         kwargs['date_archive'] = Article.objects.archive()
         kwargs['tag_list'] = Tag.objects.all().order_by('name')
@@ -138,6 +140,7 @@ class ContactPostView(FormView):
         return render(self.request, 'blog/contact.html', {'form': form})
 
 class AuthorView(ListView):
+
     template_name = 'blog/index.html'
     context_object_name = 'article_list'
 
@@ -154,3 +157,6 @@ class AuthorView(ListView):
         kwargs['date_archive'] = Article.objects.archive()
         kwargs['recent_posts'] = Article.objects.filter(status='p').order_by(Article._meta.ordering[1])[:3]
         return super(AuthorView, self).get_context_data(**kwargs)
+
+def Agree(request):
+    pass
