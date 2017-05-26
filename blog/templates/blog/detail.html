@@ -17,8 +17,9 @@
 									{% endif %}
 									<span class="post-date"><a><time class="entry-date">{{ article.created_time|date:"Y年n月d日" }}</time></a></span>
 									<span class="post-author"><a href="{% url 'author' article.author %}">{{ article.author }}</a></span>
-									<span class="comments-link"><a>{{ comment_list|length }}评论</a></span>
-									<span class="views-count"><a href="#">{{ article.views }}阅读</a></span>
+									<span class="views-count"><a href="#">阅读{{ article.views }}</a></span>
+									<span class="comments-link"><a>评论{{ comment_list|length }}</a></span>
+									<span class="likes-count"><a href="#">喜欢{{ article.likes }}</a></span>
 								</div>
 								<div class="entry-meta widget-tag-cloud">
 									{% for tag in article_tags %}
@@ -34,7 +35,7 @@
 						</article>
 
 						<div class="post"><hr>
-							<button id="top" type="button" class="btn btn-default"><span class="ion-android-favorite-outline"></span> 赞</button>
+							<button id="agree" type="button" class="btn btn-default"><span class="ion-android-favorite-outline"> 喜欢 {{ article.likes }}</span></button>
 							<button type="button" class="btn btn-default">分享</button>
 						</div>
 						<section class="post comment-area" id="comment-area">
@@ -101,16 +102,25 @@
 
 		<script src="{% static 'blog/js/script.js' %}"></script>
 		<script>
-			$('#top').click(function(){
+			$('#agree').click(function(){
+				var url = "{% url 'agree' article.pk %}";
+				var that = $(this);
 				if ($(this).children('span').attr('class')==='ion-android-favorite-outline'){
 					$(this).children('span').attr('class', 'ion-android-favorite');
-					var url = "{% url 'agree' article.pk %}";
 					$.getJSON(url, {
-						'top': 'true',
+						'agree': '1',
 						'csrfmiddlewaretoken': '{{ csrf_token }}'
+					}).done(function (data) {
+						that.children('span').text(' 喜欢 ' + data);
 					});
 				} else {
-					$(this).children('span').attr('class', 'ion-android-favorite-outline')
+					$(this).children('span').attr('class', 'ion-android-favorite-outline');
+					$.getJSON(url, {
+						'agree': '-1',
+						'csrfmiddlewaretoken': '{{ csrf_token }}'
+					}).done(function (data) {
+						that.children('span').text(' 喜欢 ' + data);
+					});
 				}
 			})
 		</script>

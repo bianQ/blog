@@ -1,10 +1,9 @@
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from django.views.generic.base import TemplateView
 from blog.models import Article, Category, Tag
 from django.views.generic.edit import FormView
 from blog.forms import BlogCommentForm, ContactForm
-from django.shortcuts import get_object_or_404, HttpResponseRedirect, render
+from django.shortcuts import get_object_or_404, HttpResponseRedirect, render, HttpResponse
 import markdown2
 
 
@@ -42,6 +41,8 @@ class ArticleDetailView(DetailView):
         kwargs['comment_list'] = self.object.blogcomment_set.all()
         kwargs['form'] = BlogCommentForm()
         # 侧边栏显示数据
+        # 客户端 IP
+        #kwargs['ip'] = self.request.META['REMOTE_ADDR']
         kwargs['category_list'] = Category.objects.all().order_by('name')
         kwargs['date_archive'] = Article.objects.archive()
         kwargs['tag_list'] = Tag.objects.all().order_by('name')
@@ -158,5 +159,18 @@ class AuthorView(ListView):
         kwargs['recent_posts'] = Article.objects.filter(status='p').order_by(Article._meta.ordering[1])[:3]
         return super(AuthorView, self).get_context_data(**kwargs)
 
-def Agree(request):
-    pass
+def Agree(request, article_id):
+    if request.method == 'GET':
+        article = get_object_or_404(Article, pk=article_id)
+        agree = request.GET['agree']
+        article.likes += int(agree)
+        article.save(update_fields=['likes'])
+
+        '''
+        获取客户端 IP
+        if 'HTTP_X_FORWARDED_FOR' in request.META:
+            ip = request.META['HTTP_X_FORWARDED_FOR']
+        else:
+            ip = request.META['REMOTE_ADDR']
+        '''
+        return HttpResponse(article.likes)
