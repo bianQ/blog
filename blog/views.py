@@ -165,7 +165,6 @@ def Agree(request, article_id):
         agree = request.GET['agree']
         article.likes += int(agree)
         article.save(update_fields=['likes'])
-
         '''
         获取客户端 IP
         if 'HTTP_X_FORWARDED_FOR' in request.META:
