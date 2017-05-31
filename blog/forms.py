@@ -41,3 +41,11 @@ class ContactForm(forms.ModelForm):
             'title': forms.TextInput(attrs={'placeholder': 'Title'}),
             'body': forms.Textarea(attrs={'placeholder': 'Your Message'})
         }
+
+class SearchForm(forms.BaseForm):
+
+    class Meta:
+
+        widgets = {
+            'search': forms.TextInput(attrs={'type': 'search', 'placeholder': 'Search'})
+        }

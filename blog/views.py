@@ -2,8 +2,8 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from blog.models import Article, Category, Tag
 from django.views.generic.edit import FormView
-from blog.forms import BlogCommentForm, ContactForm
-from django.shortcuts import get_object_or_404, HttpResponseRedirect, render, HttpResponse
+from blog.forms import BlogCommentForm, ContactForm, SearchForm
+from django.shortcuts import get_object_or_404, HttpResponseRedirect, render, HttpResponse, redirect
 import markdown2
 
 
@@ -124,6 +124,15 @@ class CommentPostView(FormView):
             'comment_list': target_article.blogcomment_set.all(),
         })
 
+class SearchPostView(FormView):
+
+    form_class = SearchForm
+    template_name = 'search/search.html'
+
+    def form_invalid(self, form):
+        search_arg = form.cleaned_data['search']
+        return
+
 def About(request):
     if request.method == 'GET':
         return render(request, 'blog/about.html')
@@ -173,3 +182,10 @@ def Agree(request, article_id):
             ip = request.META['REMOTE_ADDR']
         '''
         return HttpResponse(article.likes)
+
+class SearchView(ListView):
+
+    template_name = 'blog/index.html'
+    context_object_name = 'article_list'
+
+    #def get_queryset(self):
