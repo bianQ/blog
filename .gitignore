@@ -98,7 +98,7 @@ ENV/
 ### Example user template
 
 # IntelliJ project files
-.idea
+.idea/
 *.iml
 *.xml
 out
