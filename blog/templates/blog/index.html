@@ -2,9 +2,9 @@
 {% load static %}
 {% load paginate_tags %}
 <html>
-	{% include 'blog/_head.html' %}
+	{% include '_head.html' %}
 	<body>
-		{% include 'blog/_navigation.html' %}
+		{% include '_navigation.html' %}
 		<div class="content-body">
 			<div class="container">
 				<div class="row">
@@ -30,24 +30,21 @@
 							</header>
 							<div class="entry-content clearfix">
 								<p>{{ article.abstract }}</p>
-								<div class="read-more cl-effect-14">
-									<a href="{% url 'detail' article.id %}" class="more-link">More <span class="glyphicon glyphicon-plus"></span></a>
-								</div>
 							</div>
 							{% endfor %}
 							{% else %}
 							<h1 class="entry-title">没有内容可显示</h1>
 							{% endif %}
+							<nav style="text-align: left">
+								{% include '_pagination.html' %}
+							</nav>
 						</article>
-						<nav style="text-align: center">
-						{% include 'blog/_pagination.html' %}
-						</nav>
 					</main>
-					{% include 'blog/_sidebar.html' %}
+					{% include '_sidebar.html' %}
 				</div>
 			</div>
 		</div>
-		{% include 'blog/_footer.html' %}
+		{% include '_footer.html' %}
 
 		<!-- Mobile Menu -->
 		<div class="overlay overlay-hugeinc">

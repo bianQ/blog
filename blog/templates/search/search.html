@@ -1,34 +1,70 @@
-{% load highlight %}
+<!DOCTYPE html>
+{% load static %}
+<html>
+	{% include '_head.html' %}
+	<body>
+		{% include '_navigation.html' %}
+		<div class="content-body">
+			<div class="container">
+				<div class="row">
+					<main class="col-md-8">
+                        <form role="search" method="get" id="searchform" action="{% url 'search' %}">
+                            {{ search_form.q }}
+                            <button type="submit"><span class="ion-ios-search-strong"></span></button>
+                        </form>
+                        <br>
+                        <p><h4>搜索结果：</h4></p>
+						<article class="post">
 
-<h2>Search</h2>
+							<header class="entry-header">
 
-<form method="get" action="">
-        {{ form.q }}
-            <td>
-                <input type="submit" value="Search">
-            </td>
+                                {% if query %}
+								{% for result in page.object_list %}
+								<h1 class="entry-title">
+									<a href="{% url 'detail' result.object.pk %}">{{ result.object.title }}</a>
+								</h1>
+								<div class="entry-meta">
+									{% if result.object.category %}
+										<span class="post-category"><a href="{% url 'category' result.object.category.id %}">{{ result.object.category.name }}</a></span>
+									{% endif %}
+									<span class="post-date"><a href="#"><time class="entry-date">{{ result.object.created_time |date:"Y年n月d日" }}</time></a></span>
+									<span class="post-author"><a href="#">{{ result.object.author }}</a></span>
+									<span class="comments-link"><a href="#">{{ result.object.blogcomment_set.all|length }}评论</a></span>
+									<span class="views-count"><a href="#">{{ result.object.views }}阅读</a></span>
+								</div>
+							</header>
+							<div class="entry-content clearfix">
+								<p>{{ result.object.abstract }}</p>
+							</div>
+							{% endfor %}
+							{% else %}
+							<h1 class="entry-title">没有内容可显示</h1>
+							{% endif %}
+                            <nav style="text-align: left">
+                                {% include '_search_pagination.html' %}
+							</nav>
+						</article>
+					</main>
+					{% include '_sidebar.html' %}
+				</div>
+			</div>
+		</div>
+		{% include '_footer.html' %}
 
-    {% if query %}
-        <h3>Results</h3>
+		<!-- Mobile Menu -->
+		<div class="overlay overlay-hugeinc">
+			<button type="button" class="overlay-close"><span class="ion-ios-close-empty"></span></button>
+			<nav>
+				<ul>
+					<li><a href="index.html">Home</a></li>
+					<li><a href="full-width.html">Blog</a></li>
+					<li><a href="about.html">About</a></li>
+					<li><a href="contact.html">Contact</a></li>
+				</ul>
+			</nav>
+		</div>
 
-        {% for result in page.object_list %}
-            <p>
-                <a href="{{ result.object.get_absolute_url }}">{{ result.object.title }}</a>
-            </p>
-    {% highlight result.summary with query %}
+		<script src="{% static 'blog/js/script.js' %}"></script>
 
-        {% empty %}
-            <p>No results found.</p>
-        {% endfor %}
-
-        {% if page.has_previous or page.has_next %}
-            <div>
-                {% if page.has_previous %}<a href="?q={{ query }}&page={{ page.previous_page_number }}">{% endif %}« Previous{% if page.has_previous %}</a>{% endif %}
-                |
-                {% if page.has_next %}<a href="?q={{ query }}&page={{ page.next_page_number }}">{% endif %}Next »{% if page.has_next %}</a>{% endif %}
-            </div>
-        {% endif %}
-    {% else %}
-        {# Show some example queries to run, maybe query syntax, something else? #}
-    {% endif %}
-</form>
+	</body>
+</html>

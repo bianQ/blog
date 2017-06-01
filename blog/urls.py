@@ -30,5 +30,6 @@ urlpatterns = [
     url(r'^contact/', view=views.ContactPostView.as_view(), name='contact'),
     url(r'^author/(?P<author>\w+)/', view=views.AuthorView.as_view(), name='author'),
     url(r'^article/(?P<article_id>\d+)/agree/', view=views.Agree, name='agree'),
-    url(r'^search/', include('haystack.urls')),
+    #url(r'^search/', include('haystack.urls')),
+    url(r'^search/', view=views.Search(), name='search')
 ]

@@ -209,25 +209,26 @@ figure {
 }
 
 .entry-title {
-	text-align: center;
+	text-align: left;
 	font-size: 1.9em;
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 	line-height: 1.6;
-	padding: 10px 20px 0;
+
 }
 
 .entry-meta {
-	text-align: center;
+	text-align: left;
 	color: #DDDDDD;
 	font-size: 13px;
 	letter-spacing: 1px;
-	margin-bottom: 30px;
+	margin-bottom: 10px;
 }
 
 .entry-content {
-	font-size: 18px;
+	font-size: 15px;
 	line-height: 1.9;
 	font-weight: 300;
+	margin-bottom: 10px;
 	color: #000;
 }
 
@@ -258,22 +259,22 @@ figure {
 
 .read-more {
 	font-family: 'Ubuntu', sans-serif;
-	font-weight: 400;
+	font-weight: 30;
 	word-spacing: 1px;
 	letter-spacing: 0.01em;
-	text-align: center;
-	margin-top: 20px;
+	text-align: left;
+	margin-top: 10px;
 }
-
+/*
 .cl-effect-14 a {
-	padding: 0 20px;
+
 	height: 45px;
 	line-height: 45px;
 	position: relative;
 	display: inline-block;
-	margin: 15px 25px;
+
 	letter-spacing: 1px;
-	font-weight: 400;
+	font-weight: 350;
 	text-shadow: 0 0 1px rgba(255,255,255,0.3);
 }
 
@@ -334,7 +335,7 @@ figure {
 	-moz-transform: rotate(0deg) translateX(50%);
 	transform: rotate(0deg) translateX(50%);
 }
-
+*/
 
 /**
  * 5.0 - Widget
@@ -473,6 +474,7 @@ figure {
 	right: -6px;
 	top: 33px;
 }
+
 
 #search-menu span {
 	font-size: 20px;

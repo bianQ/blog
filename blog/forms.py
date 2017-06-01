@@ -1,5 +1,7 @@
 from django import forms
-from blog.models import Article, BlogComment, Contact
+from blog.models import BlogComment, Contact
+from haystack.forms import ModelSearchForm
+from django.utils.translation import ugettext_lazy
 
 
 class BlogCommentForm(forms.ModelForm):
@@ -42,10 +44,8 @@ class ContactForm(forms.ModelForm):
             'body': forms.Textarea(attrs={'placeholder': 'Your Message'})
         }
 
-class SearchForm(forms.BaseForm):
+class SearchForm(ModelSearchForm):
 
-    class Meta:
-
-        widgets = {
-            'search': forms.TextInput(attrs={'type': 'search', 'placeholder': 'Search'})
-        }
+    # 重写搜索框属性，添加 placeholder
+    q = forms.CharField(required=False, label=ugettext_lazy('Search'),
+                        widget=forms.TextInput(attrs={'type': 'search', 'placeholder': 'Search'}))

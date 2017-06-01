@@ -1,0 +1,42 @@
+<ul id="pagenavi" class="pagination pagination-sm">
+    {% if page.has_previous %}
+        <li class="previous"><a href="?q={{ query }}&page={{ page.previous_page_number }}">
+            &larr;
+        </a></li>
+    {% else %}
+        <li class="disabled previous"><a>&larr; </a></li>
+    {% endif %}
+    {% if current_page == 1 %}
+        <li class="active"><a>1</a></li>
+    {% else %}
+        <li><a href="?q={{ query }}&page=1">1</a></li>
+    {% endif %}
+    {% if pages_first > 2 %} {# 2以前的页码号要被显示成省略号了 #}
+        <li class="disabled"><a>...</a></li>
+    {% endif %}
+    {% for page in pages %}
+        {% if page == current_page %}
+        {{ page.number }}
+            <li class="active"><a>{{ page }}</a></li>
+        {% else %}
+            <li><a href="?q={{ query }}&page={{ page }}">{{ page }}</a></li>
+        {% endif %}
+    {% endfor %}
+    {% if pages_last < last_page %}
+        <li class="disabled"><a>...</a></li>
+    {% endif %}
+    {% if last_page != 1 and last_page %}
+        {% if last_page == current_page %}
+            <li class="active"><a>{{ last_page }}</a></li>
+        {% else %}
+            <li><a href="?q={{ query }}&page={{ last_page }}">{{ last_page }}</a></li>
+        {% endif %}
+    {% endif %}
+    {% if page.has_next %}
+        <li class="next"><a href="?q={{ query }}&page={{ page.next_page_number }}">
+            &rarr;
+        </a></li>
+    {% else %}
+        <li class="disabled next"><a>&rarr; </a></li>
+    {% endif %}
+</ul>
