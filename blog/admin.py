@@ -3,7 +3,10 @@ from blog.models import Article, Tag, Category, BlogComment, Contact
 
 
 class ArticleAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['title', 'author', 'status', 'topped','created_time', 'last_modified_time']
+    search_fields = ['title', 'author']
+    list_filter = ['created_time', 'last_modified_time']
+    date_hierarchy = 'created_time'
 
 class TagAdmin(admin.ModelAdmin):
     pass

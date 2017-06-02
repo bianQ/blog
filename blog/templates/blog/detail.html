@@ -22,11 +22,11 @@
 									<span class="likes-count"><a href="#">喜欢{{ article.likes }}</a></span>
 								</div>
 								<div class="article-meta widget-tag-cloud">
-									{% for tag in article_tags %}
 									<ul>
-										<li class="comments-link"><a href="{% url 'tag' tag.id %}">{{ tag.name }}</a></li>
+										{% for tag in article_tags %}
+											<li class="comments-link"><a href="{% url 'tag' tag.id %}">{{ tag.name }}</a></li>
+										{% endfor %}
 									</ul>
-									{% endfor %}
 								</div>
 							</header>
 							<div class="entry-content clearfix">
