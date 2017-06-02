@@ -49,3 +49,7 @@ class SearchForm(ModelSearchForm):
     # 重写搜索框属性，添加 placeholder
     q = forms.CharField(required=False, label=ugettext_lazy('Search'),
                         widget=forms.TextInput(attrs={'type': 'search', 'placeholder': 'Search'}))
+
+class UploadFileForm(forms.Form):
+
+    file = forms.FileField()
