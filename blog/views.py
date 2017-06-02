@@ -46,6 +46,7 @@ class ArticleDetailView(DetailView):
         # 侧边栏显示数据
         # 客户端 IP
         #kwargs['ip'] = self.request.META['REMOTE_ADDR']
+        kwargs['search_form'] = SearchForm()
         kwargs['category_list'] = Category.objects.all().order_by('name')
         kwargs['date_archive'] = Article.objects.archive()
         kwargs['tag_list'] = Tag.objects.all().order_by('name')
@@ -63,6 +64,7 @@ class CategoryView(ListView):
         return article_list
 
     def get_context_data(self, **kwargs):
+        kwargs['search_form'] = SearchForm()
         kwargs['category_list'] = Category.objects.all().order_by('name')
         kwargs['date_archive'] = Article.objects.archive()
         kwargs['tag_list'] = Tag.objects.all().order_by('name')
@@ -80,6 +82,7 @@ class TagView(ListView):
         return article_list
 
     def get_context_data(self, **kwargs):
+        kwargs['search_form'] = SearchForm()
         kwargs['category_list'] = Category.objects.all().order_by('name')
         kwargs['date_archive'] = Article.objects.archive()
         kwargs['tag_list'] = Tag.objects.all().order_by('name')
@@ -100,6 +103,7 @@ class ArchiveView(ListView):
         return article_list
 
     def get_context_data(self, **kwargs):
+        kwargs['search_form'] = SearchForm()
         kwargs['category_list'] = Category.objects.all().order_by('name')
         kwargs['tag_list'] = Tag.objects.all().order_by('name')
         kwargs['date_archive'] = Article.objects.archive()
@@ -156,6 +160,7 @@ class AuthorView(ListView):
         return article_list
 
     def get_context_data(self, **kwargs):
+        kwargs['search_form'] = SearchForm()
         kwargs['category_list'] = Category.objects.all().order_by('name')
         kwargs['tag_list'] = Tag.objects.all().order_by('name')
         kwargs['date_archive'] = Article.objects.archive()

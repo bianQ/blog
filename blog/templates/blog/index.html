@@ -22,10 +22,10 @@
 									{% if article.category %}
 										<span class="post-category"><a href="{% url 'category' article.category.id %}">{{ article.category.name }}</a></span>
 									{% endif %}
-									<span class="post-date"><a href="#"><time class="entry-date">{{ article.created_time |date:"Y年n月d日" }}</time></a></span>
-									<span class="post-author"><a href="#">{{ article.author }}</a></span>
-									<span class="comments-link"><a href="#">{{ article.blogcomment_set.all|length }}评论</a></span>
-									<span class="views-count"><a href="#">{{ article.views }}阅读</a></span>
+									<span class="post-date"><a><time class="entry-date">{{ article.created_time |date:"Y年n月d日" }}</time></a></span>
+									<span class="post-author"><a href="{% url 'author' article.author %}">{{ article.author }}</a></span>
+									<span class="comments-link"><a>{{ article.blogcomment_set.all|length }}评论</a></span>
+									<span class="views-count"><a>{{ article.views }}阅读</a></span>
 								</div>
 							</header>
 							<div class="entry-content clearfix">

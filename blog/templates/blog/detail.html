@@ -17,9 +17,9 @@
 									{% endif %}
 									<span class="post-date"><a><time class="entry-date">{{ article.created_time|date:"Y年n月d日" }}</time></a></span>
 									<span class="post-author"><a href="{% url 'author' article.author %}">{{ article.author }}</a></span>
-									<span class="views-count"><a href="#">阅读{{ article.views }}</a></span>
-									<span class="comments-link"><a>评论{{ comment_list|length }}</a></span>
-									<span class="likes-count"><a href="#">喜欢{{ article.likes }}</a></span>
+									<span class="views-count"><a>阅读{{ article.views }}</a></span>
+									<span class="comments-link"><a href="#comment-list">评论{{ comment_list|length }}</a></span>
+									<span class="likes-count"><a>喜欢{{ article.likes }}</a></span>
 								</div>
 								<div class="article-meta widget-tag-cloud">
 									<ul>
@@ -69,7 +69,7 @@
 
 							<div class="comment-list-panel post">
 								<h4>评论列表，共 <span>{{ comment_list|length }}</span> 条评论</h4>
-								<ul class="comment-list list-unstyled">
+								<ul class="comment-list list-unstyled" id="comment-list">
 									{% for comment in comment_list %}
 									<li class="comment-item">
 										<span class="nickname">{{ comment.user_name }}</span>
