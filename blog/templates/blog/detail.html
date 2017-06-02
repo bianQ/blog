@@ -10,8 +10,8 @@
 					<main class="col-md-8">
 						<article class="post post-1">
 							<header class="entry-header">
-								<h1 class="entry-title">{{ article.title }}</h1>
-								<div class="entry-meta">
+								<h1 class="article-title">{{ article.title }}</h1>
+								<div class="article-meta">
 									{% if article.category %}
 									<span class="post-category"><a href="{% url 'category' article.category.id %}">{{ article.category.name }}</a></span>
 									{% endif %}
@@ -21,7 +21,7 @@
 									<span class="comments-link"><a>评论{{ comment_list|length }}</a></span>
 									<span class="likes-count"><a href="#">喜欢{{ article.likes }}</a></span>
 								</div>
-								<div class="entry-meta widget-tag-cloud">
+								<div class="article-meta widget-tag-cloud">
 									{% for tag in article_tags %}
 									<ul>
 										<li class="comments-link"><a href="{% url 'tag' tag.id %}">{{ tag.name }}</a></li>
