@@ -73,7 +73,7 @@
 									{% for comment in comment_list %}
 									<li class="comment-item">
 										<span class="nickname">{{ comment.user_name }}</span>
-										<time class="submit-date">{{ comment.created_time }}</time>
+										<time class="submit-date">{{ comment.created_time |date:"Y年n月d日 H:m"}}</time>
 										<div class="text">{{ comment.body }}</div>
 									</li>
 									{% endfor %}

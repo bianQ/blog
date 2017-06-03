@@ -2,7 +2,13 @@ from django import forms
 from blog.models import BlogComment, Contact
 from haystack.forms import ModelSearchForm
 from django.utils.translation import ugettext_lazy
+from django.core.exceptions import ValidationError
+import re
 
+
+def validators_username(username):
+    if re.findall('^[A-Za-z][A-Za-z0-9_.]*$', username) == []:
+        raise ValidationError('名字只能包含字母大小写、数字、点及下划线且以字母开头')
 
 class BlogCommentForm(forms.ModelForm):
 

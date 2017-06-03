@@ -879,7 +879,7 @@ figure {
 }
 
 .comment-item .nickname:after {
-    content: ' 路';
+    content: '·';
 }
 
 .comment-item .text {

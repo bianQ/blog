@@ -125,11 +125,15 @@ class CommentPostView(FormView):
 
     def form_invalid(self, form):
         target_article = get_object_or_404(Article, pk=self.kwargs['article_id'])
+        '''
         return render(self.request, 'blog/detail.html',{
             'form': form,
             'article': target_article,
             'comment_list': target_article.blogcomment_set.all(),
         })
+        '''
+        self.res_url = target_article.get_absolute_url()
+        return HttpResponseRedirect(self.res_url)
 
 def About(request):
     if request.method == 'GET':
