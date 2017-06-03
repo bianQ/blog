@@ -128,6 +128,7 @@ class CommentPostView(FormView):
         if 'user_email' in form.errors:
             form.errors['user_email'] = '<ul class="errorlist"><li>邮箱格式错误</li></ul>'
 
+        article_tags = Tag.objects.filter(article=self.kwargs['article_id'])
         search_form = SearchForm()
         category_list = Category.objects.all().order_by('name')
         tag_list = Tag.objects.all().order_by('name')
@@ -141,6 +142,7 @@ class CommentPostView(FormView):
             # 将 form.errors 对象传递到前端渲染
             'form_errors': form.errors,
             'article': target_article,
+            'article_tags': article_tags,
             'comment_list': target_article.blogcomment_set.all(),
             'search_form': search_form,
             'category_list': category_list,
