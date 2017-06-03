@@ -128,6 +128,12 @@ class CommentPostView(FormView):
         if 'user_email' in form.errors:
             form.errors['user_email'] = '<ul class="errorlist"><li>邮箱格式错误</li></ul>'
 
+        search_form = SearchForm()
+        category_list = Category.objects.all().order_by('name')
+        tag_list = Tag.objects.all().order_by('name')
+        date_archive = Article.objects.archive()
+        recent_posts = Article.objects.filter(status='p').order_by(Article._meta.ordering[0])[:3]
+
         target_article = get_object_or_404(Article, pk=self.kwargs['article_id'])
         target_article.body = markdown2.markdown(target_article.body, extras=['fenced-code-blocks'])
         return render(self.request, 'blog/detail.html',{
@@ -136,6 +142,11 @@ class CommentPostView(FormView):
             'form_errors': form.errors,
             'article': target_article,
             'comment_list': target_article.blogcomment_set.all(),
+            'search_form': search_form,
+            'category_list': category_list,
+            'tag_list': tag_list,
+            'date_archive': date_archive,
+            'recent_posts': recent_posts
         })
 
 def About(request):
