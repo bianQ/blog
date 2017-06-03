@@ -6,23 +6,24 @@ from django.core.exceptions import ValidationError
 import re
 
 
-def validators_username(username):
-    if re.findall('^[A-Za-z][A-Za-z0-9_.]*$', username) == []:
+def validators_username(user_name):
+    # 使用正则匹配验证用户名是否合法
+    if re.findall('^[A-Za-z][A-Za-z0-9_.]*$', user_name) == []:
         raise ValidationError('名字只能包含字母大小写、数字、点及下划线且以字母开头')
 
 class BlogCommentForm(forms.ModelForm):
+
+    # 添加字段验证需要显示的定义字段属性，否则会被忽略
+    user_name = forms.CharField(validators=[validators_username], widget=forms.TextInput(attrs={
+        'id': 'id_name', 'class': 'form-control', 'aria-describedby': 'sizing-addon1'
+    }))
 
     class Meta:
 
         model = BlogComment
         fields = ['user_name', 'user_email', 'body']
+
         widgets = {
-            'user_name': forms.TextInput(attrs={
-                'id': 'id_name',
-                'class': 'form-control',
-                #'placeholder': '请输入昵称',
-                'aria-describedby': 'sizing-addon1',
-            }),
             'user_email': forms.TextInput(attrs={
                 'id': 'id_email',
                 'class': 'form-control',

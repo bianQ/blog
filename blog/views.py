@@ -124,16 +124,19 @@ class CommentPostView(FormView):
         return HttpResponseRedirect(self.success_url)
 
     def form_invalid(self, form):
+        # 原邮箱 validators 的报错为英文，为了汉化，对其重新赋值
+        if 'user_email' in form.errors:
+            form.errors['user_email'] = '<ul class="errorlist"><li>邮箱格式错误</li></ul>'
+
         target_article = get_object_or_404(Article, pk=self.kwargs['article_id'])
-        '''
+        target_article.body = markdown2.markdown(target_article.body, extras=['fenced-code-blocks'])
         return render(self.request, 'blog/detail.html',{
             'form': form,
+            # 将 form.errors 对象传递到前端渲染
+            'form_errors': form.errors,
             'article': target_article,
             'comment_list': target_article.blogcomment_set.all(),
         })
-        '''
-        self.res_url = target_article.get_absolute_url()
-        return HttpResponseRedirect(self.res_url)
 
 def About(request):
     if request.method == 'GET':
