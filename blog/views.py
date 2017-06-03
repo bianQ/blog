@@ -25,7 +25,7 @@ class IndexView(ListView):
         kwargs['category_list'] = Category.objects.all().order_by('name')
         kwargs['date_archive'] = Article.objects.archive()
         kwargs['tag_list'] = Tag.objects.all().order_by('name')
-        kwargs['recent_posts'] = Article.objects.filter(status='p').order_by(Article._meta.ordering[1])[:3]
+        kwargs['recent_posts'] = Article.objects.filter(status='p').order_by(Article._meta.ordering[0])[:3]
         return super(IndexView, self).get_context_data(**kwargs)
 
 class ArticleDetailView(DetailView):
@@ -50,7 +50,7 @@ class ArticleDetailView(DetailView):
         kwargs['category_list'] = Category.objects.all().order_by('name')
         kwargs['date_archive'] = Article.objects.archive()
         kwargs['tag_list'] = Tag.objects.all().order_by('name')
-        kwargs['recent_posts'] = Article.objects.filter(status='p').order_by(Article._meta.ordering[1])[:3]
+        kwargs['recent_posts'] = Article.objects.filter(status='p').order_by(Article._meta.ordering[0])[:3]
         return super(ArticleDetailView, self).get_context_data(**kwargs)
 
 class CategoryView(ListView):
@@ -68,7 +68,7 @@ class CategoryView(ListView):
         kwargs['category_list'] = Category.objects.all().order_by('name')
         kwargs['date_archive'] = Article.objects.archive()
         kwargs['tag_list'] = Tag.objects.all().order_by('name')
-        kwargs['recent_posts'] = Article.objects.filter(status='p').order_by(Article._meta.ordering[1])[:3]
+        kwargs['recent_posts'] = Article.objects.filter(status='p').order_by(Article._meta.ordering[0])[:3]
         return super(CategoryView, self).get_context_data(**kwargs)
 
 class TagView(ListView):
@@ -86,7 +86,7 @@ class TagView(ListView):
         kwargs['category_list'] = Category.objects.all().order_by('name')
         kwargs['date_archive'] = Article.objects.archive()
         kwargs['tag_list'] = Tag.objects.all().order_by('name')
-        kwargs['recent_posts'] = Article.objects.filter(status='p').order_by(Article._meta.ordering[1])[:3]
+        kwargs['recent_posts'] = Article.objects.filter(status='p').order_by(Article._meta.ordering[0])[:3]
         return super(TagView, self).get_context_data(**kwargs)
 
 class ArchiveView(ListView):
@@ -107,7 +107,7 @@ class ArchiveView(ListView):
         kwargs['category_list'] = Category.objects.all().order_by('name')
         kwargs['tag_list'] = Tag.objects.all().order_by('name')
         kwargs['date_archive'] = Article.objects.archive()
-        kwargs['recent_posts'] = Article.objects.filter(status='p').order_by(Article._meta.ordering[1])[:3]
+        kwargs['recent_posts'] = Article.objects.filter(status='p').order_by(Article._meta.ordering[0])[:3]
         return super(ArchiveView, self).get_context_data(**kwargs)
 
 class CommentPostView(FormView):
@@ -164,7 +164,7 @@ class AuthorView(ListView):
         kwargs['category_list'] = Category.objects.all().order_by('name')
         kwargs['tag_list'] = Tag.objects.all().order_by('name')
         kwargs['date_archive'] = Article.objects.archive()
-        kwargs['recent_posts'] = Article.objects.filter(status='p').order_by(Article._meta.ordering[1])[:3]
+        kwargs['recent_posts'] = Article.objects.filter(status='p').order_by(Article._meta.ordering[0])[:3]
         return super(AuthorView, self).get_context_data(**kwargs)
 
 def Agree(request, article_id):
@@ -193,7 +193,7 @@ class Search(SearchView):
         extra['category_list'] = Category.objects.all().order_by('name')
         extra['tag_list'] = Tag.objects.all().order_by('name')
         extra['date_archive'] = Article.objects.archive()
-        extra['recent_posts'] = Article.objects.filter(status='p').order_by(Article._meta.ordering[1])[:3]
+        extra['recent_posts'] = Article.objects.filter(status='p').order_by(Article._meta.ordering[0])[:3]
         return extra
 
     #为统一分页样式，重写 get_context, 增加页面相关属性
