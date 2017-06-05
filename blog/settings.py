@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'haystack',
     'blog',
     'pygments',
+    'django_wysiwyg',
 ]
 
 MIDDLEWARE = [
@@ -143,3 +144,7 @@ HAYSTACK_CONNECTIONS = {
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
 HAYSTACK_SEARCH_RESULTS_PER_PAGE  =  5
+
+# Rich Edit
+
+DJANGO_WYSIWYG_FLAVOR = "mkeditor"

@@ -3,6 +3,9 @@ from blog.models import Article, Tag, Category, BlogComment, Contact
 
 
 class ArticleAdmin(admin.ModelAdmin):
+
+    change_form_template = 'blog/admin/change_form.html'
+
     list_display = ['title', 'author', 'status', 'topped','created_time', 'last_modified_time']
     search_fields = ['title', 'author']
     list_filter = ['created_time', 'last_modified_time']

@@ -31,5 +31,6 @@ urlpatterns = [
     url(r'^author/(?P<author>\w+)/', view=views.AuthorView.as_view(), name='author'),
     url(r'^article/(?P<article_id>\d+)/agree/', view=views.Agree, name='agree'),
     #url(r'^search/', include('haystack.urls')),
-    url(r'^search/', view=views.Search(), name='search')
+    url(r'^search/', view=views.Search, name='search'),
+    url(r'^upload/', view=views.Upload, name='upload'),
 ]

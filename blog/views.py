@@ -249,3 +249,7 @@ class Search(SearchView):
         context.update(self.extra_context())
 
         return context
+
+def Upload(request):
+    if request.method == 'POST':
+        print(dir(request.POST))
