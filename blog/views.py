@@ -4,10 +4,13 @@ from blog.models import Article, Category, Tag
 from django.views.generic.edit import FormView
 from blog.forms import BlogCommentForm, ContactForm, SearchForm
 from django.shortcuts import get_object_or_404, HttpResponseRedirect, render, HttpResponse
-import markdown2
+import markdown2, datetime, os, json
 from haystack.views import SearchView
 #from haystack.forms import ModelSearchForm
 from blog.templatetags.paginate_tags import get_left, get_right
+from django.conf import settings
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
 
 
 class IndexView(ListView):
@@ -252,4 +255,14 @@ class Search(SearchView):
 
 def Upload(request):
     if request.method == 'POST':
-        print(dir(request.POST))
+        # 获取图片对象，生成图片保存路径  app/static/media/upload_date/image_name
+        # 生成图片 url 返回给前端   /static/media/upload_date/image_name
+        image = request.FILES['files']
+        date = datetime.datetime.now().strftime('%Y%m%d')
+        img_dir = os.path.join(settings.MEDIA_ROOT, date)
+        img_save_path = os.path.join(img_dir, image.name)
+        default_storage.save(img_save_path, ContentFile(image.read()))
+        img_path = os.path.join(os.path.join(settings.MEDIA_URL, date), image.name)
+
+        content = json.dumps({'status': 200, 'store_path': img_path})
+        return HttpResponse(content)

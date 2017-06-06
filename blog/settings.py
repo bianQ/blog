@@ -148,3 +148,9 @@ HAYSTACK_SEARCH_RESULTS_PER_PAGE  =  5
 # Rich Edit
 
 DJANGO_WYSIWYG_FLAVOR = "mkeditor"
+
+# Upload Image
+
+MEDIA_URL = '/static/media/'
+
+MEDIA_ROOT = os.path.join(PROJECT_PATH, 'static/media')

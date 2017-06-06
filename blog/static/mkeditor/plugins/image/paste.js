@@ -300,6 +300,8 @@ PASTE = {
     }
                      
     fd.append("files", file);
+    var csrfmiddlewaretoken = document.getElementsByName('csrfmiddlewaretoken')[0].attributes['value'].value;
+    fd.append("csrfmiddlewaretoken", csrfmiddlewaretoken);
     //追加文件数据 
          
     xhr.onreadystatechange = function() {
