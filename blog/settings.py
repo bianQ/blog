@@ -153,4 +153,8 @@ DJANGO_WYSIWYG_FLAVOR = "mkeditor"
 
 MEDIA_URL = '/static/media/'
 
+# 本地测试
 MEDIA_ROOT = os.path.join(PROJECT_PATH, 'static/media')
+
+# 服务器使用
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media')
