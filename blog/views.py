@@ -262,7 +262,13 @@ def Upload(request):
         img_dir = os.path.join(settings.MEDIA_ROOT, date)
         img_save_path = os.path.join(img_dir, image.name)
         default_storage.save(img_save_path, ContentFile(image.read()))
+
         img_path = os.path.join(os.path.join(settings.MEDIA_URL, date), image.name)
+
+        # 如果使用 Nginx 代理，保存路径应该使用下面这种
+        img_dir_nginx = os.path.join(os.path.join(settings.STATIC_ROOT, 'media'), date)
+        img_save_path_nginx = os.path.join(img_dir_nginx, image.name)
+        default_storage.save(img_save_path_nginx, ContentFile(image.read()))
 
         content = json.dumps({'status': 200, 'store_path': img_path})
         return HttpResponse(content)
