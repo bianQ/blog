@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url, include
+from django.conf.urls import url
 from django.contrib import admin
 from blog import views
 
@@ -31,6 +31,7 @@ urlpatterns = [
     url(r'^author/(?P<author>\w+)/', view=views.AuthorView.as_view(), name='author'),
     url(r'^article/(?P<article_id>\d+)/agree/', view=views.Agree, name='agree'),
     #url(r'^search/', include('haystack.urls')),
-    url(r'^search/', view=views.Search, name='search'),
+    # ()不能去掉， 否则会报 'Search' object has no attribute 'get'
+    url(r'^search/', view=views.Search(), name='search'),
     url(r'^upload/', view=views.Upload, name='upload'),
 ]
