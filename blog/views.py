@@ -18,7 +18,8 @@ class IndexView(ListView):
     context_object_name = 'article_list'
 
     def get_queryset(self):
-        article_list = Article.objects.filter(status='p')
+        # 文章列表按照创建时间排序
+        article_list = Article.objects.filter(status='p').order_by(Article._meta.ordering[1])
         for article in article_list:
             article.body = markdown2.markdown(article.body, extras=['fenced-code-blocks'],)
         return article_list
@@ -28,6 +29,7 @@ class IndexView(ListView):
         kwargs['category_list'] = Category.objects.all().order_by('name')
         kwargs['date_archive'] = Article.objects.archive()
         kwargs['tag_list'] = Tag.objects.all().order_by('name')
+        # 最新发布按照最近修改时间排序
         kwargs['recent_posts'] = Article.objects.filter(status='p').order_by(Article._meta.ordering[0])[:3]
         return super(IndexView, self).get_context_data(**kwargs)
 
