@@ -1,6 +1,7 @@
 from django.db import models
 from collections import defaultdict
 from django.core.urlresolvers import reverse
+import markdown2
 
 
 class ArticleManage(models.Manager):
@@ -38,13 +39,16 @@ class Article(models.Model):
     tags = models.ManyToManyField('Tag', verbose_name='标签集合', blank=True)
 
     def __str__(self):
-        return  self.title
+        return self.title
 
     class Meta:
         ordering = ['-last_modified_time', '-created_time']
 
     def get_absolute_url(self):
         return reverse('detail', kwargs={'article_id': self.pk})
+
+    def mk_body(self):
+        return markdown2.markdown(self.body, extras=['fenced-code-blocks'],)
 
 class Category(models.Model):
 

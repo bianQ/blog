@@ -4,7 +4,7 @@ from blog.models import Article, Category, Tag
 from django.views.generic.edit import FormView
 from blog.forms import BlogCommentForm, ContactForm, SearchForm
 from django.shortcuts import get_object_or_404, HttpResponseRedirect, render, HttpResponse
-import markdown2, datetime, os, json
+import datetime, os, json
 from haystack.views import SearchView
 #from haystack.forms import ModelSearchForm
 from blog.templatetags.paginate_tags import get_left, get_right
@@ -20,8 +20,6 @@ class IndexView(ListView):
     def get_queryset(self):
         # 文章列表按照创建时间排序
         article_list = Article.objects.filter(status='p').order_by(Article._meta.ordering[1])
-        for article in article_list:
-            article.body = markdown2.markdown(article.body, extras=['fenced-code-blocks'],)
         return article_list
 
     def get_context_data(self, **kwargs):
@@ -41,7 +39,6 @@ class ArticleDetailView(DetailView):
 
     def get_object(self, queryset=None):
         obj = super(ArticleDetailView, self).get_object()
-        obj.body = markdown2.markdown(obj.body, extras=['fenced-code-blocks'], )
         obj.views += 1
         obj.save(update_fields=['views'])
 
@@ -66,9 +63,7 @@ class CategoryView(ListView):
     context_object_name = 'article_list'
 
     def get_queryset(self):
-        article_list = Article.objects.filter(category=self.kwargs['cate_id'], status='p')
-        for article in article_list:
-            article.body = markdown2.markdown(article.body, extras=['fenced-code-blocks'],)
+        article_list = Article.objects.filter(category=self.kwargs['cate_id'], status='p').order_by(Article._meta.ordering[1])
         return article_list
 
     def get_context_data(self, **kwargs):
@@ -84,9 +79,7 @@ class TagView(ListView):
     context_object_name = 'article_list'
 
     def get_queryset(self):
-        article_list = Article.objects.filter(tags=self.kwargs['tag_id'], status='p')
-        for article in article_list:
-            article.body = markdown2.markdown(article.body, extras=['fenced-code-blocks'],)
+        article_list = Article.objects.filter(tags=self.kwargs['tag_id'], status='p').order_by(Article._meta.ordering[1])
         return article_list
 
     def get_context_data(self, **kwargs):
@@ -105,9 +98,7 @@ class ArchiveView(ListView):
     def get_queryset(self):
         year = int(self.kwargs['year'])
         month = int(self.kwargs['month'])
-        article_list = Article.objects.filter(created_time__year=year, created_time__month=month)
-        for article in article_list:
-            article.body = markdown2.markdown(article.body, extras=['fenced-code-blocks'],)
+        article_list = Article.objects.filter(created_time__year=year, created_time__month=month).order_by(Article._meta.ordering[1])
         return article_list
 
     def get_context_data(self, **kwargs):
@@ -144,7 +135,6 @@ class CommentPostView(FormView):
         recent_posts = Article.objects.filter(status='p').order_by(Article._meta.ordering[0])[:3]
 
         target_article = get_object_or_404(Article, pk=self.kwargs['article_id'])
-        target_article.body = markdown2.markdown(target_article.body, extras=['fenced-code-blocks'])
         return render(self.request, 'blog/detail.html',{
             'form': form,
             # 将 form.errors 对象传递到前端渲染
@@ -182,9 +172,7 @@ class AuthorView(ListView):
 
     def get_queryset(self):
         author = self.kwargs['author']
-        article_list = Article.objects.filter(author=author, status='p')
-        for article in article_list:
-            article.body = markdown2.markdown(article.body, extras=['fenced-code-blocks'],)
+        article_list = Article.objects.filter(author=author, status='p').order_by(Article._meta.ordering[1])
         return article_list
 
     def get_context_data(self, **kwargs):
@@ -231,6 +219,7 @@ class Search(SearchView):
 
         #计算需要显示的页码列表
         pages = get_left(page.number, 3, page.paginator.num_pages) + get_right(page.number, 3, page.paginator.num_pages)
+
 
         context = {
             'query': self.query,
