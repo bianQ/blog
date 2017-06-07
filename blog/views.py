@@ -40,6 +40,9 @@ class ArticleDetailView(DetailView):
     def get_object(self, queryset=None):
         obj = super(ArticleDetailView, self).get_object()
         obj.body = markdown2.markdown(obj.body, extras=['fenced-code-blocks'], )
+        obj.views += 1
+        obj.save(update_fields=['views'])
+
         return obj
 
     def get_context_data(self, **kwargs):

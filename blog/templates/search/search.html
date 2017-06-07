@@ -27,10 +27,11 @@
 									{% if result.object.category %}
 										<span class="post-category"><a href="{% url 'category' result.object.category.id %}">{{ result.object.category.name }}</a></span>
 									{% endif %}
-									<span class="post-date"><a href="#"><time class="entry-date">{{ result.object.created_time |date:"Y年n月d日" }}</time></a></span>
-									<span class="post-author"><a href="#">{{ result.object.author }}</a></span>
-									<span class="comments-link"><a href="#">{{ result.object.blogcomment_set.all|length }}评论</a></span>
-									<span class="views-count"><a href="#">{{ result.object.views }}阅读</a></span>
+									<span class="post-date"><a><time class="entry-date">{{ result.object.created_time |date:"Y年n月d日" }}</time></a></span>
+									<span class="post-author"><a href="{% url 'author' result.object.author %}">{{ result.object.author }}</a></span>
+									<span class="comments-link"><a>评论{{ result.object.blogcomment_set.all|length }}</a></span>
+									<span class="views-count"><a>阅读{{ result.object.views }}</a></span>
+									<span class="likes-count"><a>喜欢{{ result.object.likes }}</a></span>
 								</div>
 							</header>
 							<div class="entry-content clearfix">
