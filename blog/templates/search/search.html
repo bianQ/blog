@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load highlight %}
 <html>
 	{% include '_head.html' %}
 	<body>
@@ -35,7 +36,7 @@
 								</div>
 							</header>
 							<div class="entry-content clearfix">
-								<p>{{ result.object.mk_body|safe|truncatechars_html:60 }}</p>
+								<p>{% highlight result.object.mk_body with query max_length 200 %}</p>
 							</div>
 							{% endfor %}
 							{% else %}

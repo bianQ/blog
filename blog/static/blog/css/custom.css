@@ -226,7 +226,7 @@ figure {
 	line-height: 1.9;
 	font-weight: 300;
 	margin-bottom: 10px;
-	color: #00000;
+	color: #272727;
 }
 
 /**
@@ -981,4 +981,12 @@ figure {
 
 .btn-5b:hover:before {
     left: 0;
+}
+
+/**
+ * Haystack-Highlighte
+ */
+
+span.highlighted{
+    color: #CE0000;
 }
