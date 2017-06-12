@@ -196,7 +196,7 @@ TOOLBARS = {
 			toolLi.onclick = function(){
 				if(status == 0){
 					document.body.style.overflow = 'hidden';// 直接隐藏滚动条
-					markdownDiv.setAttribute("style","width:100%;height:"+(document.documentElement.clientHeight-30)+"px;position:fixed;left:0;top:0;");
+					markdownDiv.setAttribute("style","margin-left:0px;width:100%;height:"+(document.documentElement.clientHeight-30)+"px;position:fixed;left:0;top:0;");
 					status = 1;
 				}else if(status == 1){
 					document.body.style.overflow = '';

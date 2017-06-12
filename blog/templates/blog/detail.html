@@ -74,15 +74,25 @@
 									</div>
 								</div>
 							</form>
-
+							<div class="comment-list-title">评论列表，共 <span>{{ comment_list|length }}</span> 条评论</div>
 							<div class="comment-list-panel post">
-								<h4>评论列表，共 <span>{{ comment_list|length }}</span> 条评论</h4>
 								<ul class="comment-list list-unstyled" id="comment-list">
 									{% for comment in comment_list %}
 									<li class="comment-item">
 										<span class="nickname">{{ comment.user_name }}</span>
 										<time class="submit-date">{{ comment.created_time |date:"Y年n月d日 H:m"}}</time>
+										<span class="comment">回复</span>
 										<div class="text">{{ comment.body }}</div>
+										<section>
+											<header class="answer_reply_title">--- 共有 0 条评论 ---</header>
+											<blockquote class="answer_replies">
+												<div>
+													<span class="nickname">{{ comment.user_name }}</span>
+													<time class="submit-date">{{ comment.created_time |date:"Y年n月d日 H:m"}}</time>
+													<div class="text">{{ comment.body }}</div>
+												</div>
+											</blockquote>
+										</section>
 									</li>
 									{% endfor %}
 								</ul>

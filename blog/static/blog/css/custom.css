@@ -859,11 +859,11 @@ figure {
 }
 
 .comment-list-panel {
-    margin-top: 30px;
+    margin-top: 5px;
 }
 
 .comment-list {
-    margin-top: 15px;
+    margin-top: 5px;
 }
 
 .comment-item:not(:last-child) {
@@ -873,6 +873,7 @@ figure {
 }
 
 .comment-item .nickname,
+.comment-item .comment,
 .comment-item .submit-date {
     color: #777;
     font-size: 14px;
@@ -887,6 +888,24 @@ figure {
     font-size: 16px;
 }
 
+.comment-list-title {
+    margin-top:30px;
+    font-size:18px;
+    line-height:16px;
+    }
+
+.answer_reply_title {
+    position: relative;
+    font-size:12px;
+    line-height:16px;
+    top:10px;
+    height:16px;
+    color:#4a4a4a
+    }
+.answer_replies {
+    position: relative;
+    top:10px;
+    }
 /**
  * 10.0 - Contact Form
  */
