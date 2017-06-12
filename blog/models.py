@@ -1,5 +1,6 @@
-from django.db import models
 from collections import defaultdict
+
+from django.db import models
 from django.core.urlresolvers import reverse
 import markdown2
 

@@ -1,9 +1,11 @@
+import re
+
 from django import forms
-from blog.models import BlogComment, Contact
-from haystack.forms import ModelSearchForm
 from django.utils.translation import ugettext_lazy
 from django.core.exceptions import ValidationError
-import re
+from haystack.forms import ModelSearchForm
+
+from blog.models import BlogComment, Contact
 
 
 def validators_username(user_name):
