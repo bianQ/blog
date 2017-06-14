@@ -219,26 +219,14 @@ class Search(SearchView):
     #为统一分页样式，重写 get_context, 增加页面相关属性
 
     def get_context(self):
-        (paginator, page) = self.build_page()
+        context = super(Search, self).get_context()
 
         #计算需要显示的页码列表
-        pages = get_left(page.number, 3, page.paginator.num_pages) + get_right(page.number, 3, page.paginator.num_pages)
-
-
-        context = {
-            'query': self.query,
-            'form': self.form,
-            'page': page,
-            'paginator': paginator,
-            'suggestion': None,
-        }
-
-        if hasattr(self.results, 'query') and self.results.query.backend.include_spelling:
-            context['suggestion'] = self.form.get_suggestion()
+        pages = get_left(context['page'].number, 3, context['page'].paginator.num_pages) + get_right(context['page'].number, 3, context['page'].paginator.num_pages)
 
         context['pages'] = pages
-        context['current_page'] = page.number
-        context['last_page'] = page.paginator.num_pages
+        context['current_page'] = context['page'].number
+        context['last_page'] = context['page'].paginator.num_pages
         #这里直接复制 paginate_tags.py 里面的部分代码
         try:
             context['pages_first'] = pages[0]
@@ -246,8 +234,6 @@ class Search(SearchView):
         except IndexError:
             context['pages_first'] = 1
             context['pages_last'] = 2
-
-        context.update(self.extra_context())
 
         return context
 

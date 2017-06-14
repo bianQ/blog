@@ -143,6 +143,7 @@ HAYSTACK_CONNECTIONS = {
 
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
+# 搜索页每页显示的条目数
 HAYSTACK_SEARCH_RESULTS_PER_PAGE  =  5
 
 # Rich Edit
