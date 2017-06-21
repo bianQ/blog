@@ -17,6 +17,9 @@ from blog.forms import BlogCommentForm, ContactForm, SearchForm
 from blog.templatetags.paginate_tags import get_left, get_right
 
 
+def page_not_found(request):
+    return render(request, 'blog/404.html')
+
 class IndexView(ListView):
     template_name = 'blog/index.html'
     context_object_name = 'article_list'
