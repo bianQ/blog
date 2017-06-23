@@ -13,10 +13,37 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
+from django.contrib.auth.models import User
 from django.contrib import admin
 
-from blog import views
+from blog import views, models
+from rest_framework import routers, serializers, viewsets
+
+# Serializers define the API representation.
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = ('url', 'username', 'email', 'is_staff')
+
+# ViewSets define the view behavior.
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+class ArticleSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = models.Article
+        fields = ('url', 'title', 'author', 'created_time', 'last_modified_time')
+
+class ArticleViewSet(viewsets.ModelViewSet):
+    queryset = models.Article.objects.all()
+    serializer_class = ArticleSerializer
+
+# Routers provide an easy way of automatically determining the URL conf.
+router = routers.DefaultRouter()
+router.register(r'users', UserViewSet)
+router.register(r'artilce', ArticleViewSet)
 
 
 urlpatterns = [
@@ -31,10 +58,13 @@ urlpatterns = [
     url(r'^contact/$', view=views.ContactPostView.as_view(), name='contact'),
     url(r'^author/(?P<author>\w+)/$', view=views.AuthorView.as_view(), name='author'),
     url(r'^article/(?P<article_id>\d+)/agree/$', view=views.Agree, name='agree'),
-    #url(r'^search/', include('haystack.urls')),
+    # url(r'^search/', include('haystack.urls')),
     # ()不能去掉， 否则会报 'Search' object has no attribute 'get'
     url(r'^search/$', view=views.Search(), name='search'),
     url(r'^upload/$', view=views.Upload, name='upload'),
+    # 添加 API 接口
+    url(r'^api/', include(router.urls)),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
 
 handler404 = views.page_not_found

@@ -24,9 +24,9 @@ PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
 SECRET_KEY = 'x98cl9$m)m#$1hi4)(afb1t-m7jskyf#e3d=z_j(@gi2ic)w!)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'blog',
     'pygments',
     'django_wysiwyg',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -132,6 +133,7 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+
 # Haystack
 
 HAYSTACK_CONNECTIONS = {
@@ -143,19 +145,33 @@ HAYSTACK_CONNECTIONS = {
 
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
+
 # 搜索页每页显示的条目数
 HAYSTACK_SEARCH_RESULTS_PER_PAGE  =  5
 
-# Rich Edit
 
+# Rich Edit
 DJANGO_WYSIWYG_FLAVOR = "mkeditor"
 
-# Upload Image
 
+# Upload Image
 MEDIA_URL = '/static/media/'
+
 
 # 本地测试
 MEDIA_ROOT = os.path.join(PROJECT_PATH, 'static/media')
 
+
 # 服务器使用
 #MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media')
+
+
+# Django rest_framework
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}

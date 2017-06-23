@@ -70,6 +70,7 @@ class CategoryView(ListView):
     context_object_name = 'article_list'
 
     def get_queryset(self):
+        cate = get_object_or_404(Category, pk=self.kwargs['cate_id'])
         article_list = Article.objects.filter(category=self.kwargs['cate_id'], status='p').order_by(Article._meta.ordering[1])
         return article_list
 
