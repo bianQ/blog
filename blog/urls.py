@@ -14,37 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url, include
-from django.contrib.auth.models import User
 from django.contrib import admin
 
-from blog import views, models
-from rest_framework import routers, serializers, viewsets
-
-# Serializers define the API representation.
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = User
-        fields = ('url', 'username', 'email', 'is_staff')
-
-# ViewSets define the view behavior.
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-class ArticleSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = models.Article
-        fields = ('url', 'title', 'author', 'created_time', 'last_modified_time')
-
-class ArticleViewSet(viewsets.ModelViewSet):
-    queryset = models.Article.objects.all()
-    serializer_class = ArticleSerializer
-
-# Routers provide an easy way of automatically determining the URL conf.
-router = routers.DefaultRouter()
-router.register(r'users', UserViewSet)
-router.register(r'artilce', ArticleViewSet)
-
+from blog import views
+from blog.api.serializer import router
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
