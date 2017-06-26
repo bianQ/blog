@@ -19,7 +19,7 @@ class UserViewSet(viewsets.ModelViewSet):
 class ArticleSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Article
-        fields = ('url', 'title', 'author', 'created_time', 'last_modified_time', 'body')
+        fields = ('url', 'title', 'author', 'created_time', 'last_modified_time')
 
 class ArticleViewSet(viewsets.ModelViewSet):
     queryset = Article.objects.all()
