@@ -1,6 +1,10 @@
 import datetime
 import os
+import base64
 import json
+import random
+import string
+import re
 
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -9,6 +13,7 @@ from django.shortcuts import get_object_or_404, HttpResponseRedirect, render, Ht
 from django.conf import settings
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
+from django.utils.datastructures import MultiValueDictKeyError
 from haystack.views import SearchView
 #from haystack.forms import ModelSearchForm
 
@@ -242,16 +247,43 @@ class Search(SearchView):
         return context
 
 def Upload(request):
+    '''
+    接收手动上传，与粘贴的图片
+    :param request:
+    :return:
+    '''
     if request.method == 'POST':
         # 获取图片对象，生成图片保存路径  app/static/media/upload_date/image_name
         # 生成图片 url 返回给前端   /static/media/upload_date/image_name
-        image = request.FILES['files']
         date = datetime.datetime.now().strftime('%Y%m%d')
+        # 本地图片保存目录
         img_dir = os.path.join(settings.MEDIA_ROOT, date)
-        img_save_path = os.path.join(img_dir, image.name)
-        default_storage.save(img_save_path, ContentFile(image.read()))
+        try:
+            image = request.FILES['files']
+            filename = image.name
+            img_save_path = os.path.join(img_dir, filename)
+            default_storage.save(img_save_path, ContentFile(image.read()))
 
-        img_path = os.path.join(os.path.join(settings.MEDIA_URL, date), image.name)
+        except MultiValueDictKeyError:
+            # 粘贴接收的图片，为 base64 编码格式，还带有描述用的前缀
+            head, image = request.POST['image'].split(',')
+            # 用正则从前缀中匹配文件的类型
+            image_type = re.findall(r'image/(\w+);', head)[0]
+            image = base64.b64decode(image)
+            # 因为没有获取文件名，所以需要随机生成一个
+            # 生成由大小写字母与数字组合的字符串
+            strs = string.ascii_letters + string.digits
+            # 随机生成 8 位字符串
+            filename = ''.join(random.sample(strs, 8)) + '.' + image_type
+            img_save_path = os.path.join(img_dir, filename)
+            # 判断目录是否存在
+            if not os.path.exists(img_dir):
+                os.makedirs(img_dir)
+            with open(img_save_path, 'wb') as file:
+                file.write(image)
+
+        # 客户端图片访问路径
+        img_path = os.path.join(os.path.join(settings.MEDIA_URL, date), filename)
 
         content = json.dumps({'status': 200, 'store_path': img_path})
         return HttpResponse(content)

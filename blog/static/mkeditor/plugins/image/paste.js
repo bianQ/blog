@@ -1,5 +1,7 @@
 (function(){
 
+var csrfmiddlewaretoken = document.getElementsByName('csrfmiddlewaretoken')[0].attributes['value'].value;
+
 PASTE = {
   /**
    * 覆盖层
@@ -300,7 +302,6 @@ PASTE = {
     }
                      
     fd.append("files", file);
-    var csrfmiddlewaretoken = document.getElementsByName('csrfmiddlewaretoken')[0].attributes['value'].value;
     fd.append("csrfmiddlewaretoken", csrfmiddlewaretoken);
     //追加文件数据 
          
@@ -330,7 +331,8 @@ PASTE = {
     var formData = new FormData();
     formData.append('image', file);
     formData.append('submission-type', type);
-   
+    formData.append("csrfmiddlewaretoken", csrfmiddlewaretoken);
+
     var xhr = new XMLHttpRequest();
     xhr.open('POST', MD.path + '?type=base64');
     xhr.onload = function () {
