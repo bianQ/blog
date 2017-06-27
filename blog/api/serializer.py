@@ -2,7 +2,6 @@ from django.contrib.auth.models import User
 
 from blog.models import Article
 from rest_framework import routers, serializers, viewsets
-from django_filters.rest_framework import DjangoFilterBackend, FilterSet
 
 
 # Serializers define the API representation.
