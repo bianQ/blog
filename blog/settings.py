@@ -138,6 +138,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 
 # Haystack
+# http://django-haystack.readthedocs.io/en/master/tutorial.html#configuration
 
 HAYSTACK_CONNECTIONS = {
     'default': {
@@ -170,6 +171,7 @@ MEDIA_ROOT = os.path.join(PROJECT_PATH, 'static/media')
 
 
 # Django rest_framework
+# http://www.django-rest-framework.org/api-guide/filtering/#djangofilterbackend
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
@@ -188,9 +190,17 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
         'LOCATION': 'unique-snowflake',
-        'TIMEOUT': 600,
+        'TIMEOUT': 120,
         'OPTIONS': {
             'MAX_ENTRIES': 100
         }
     }
 }
+
+# Email
+
+EMAIL_HOST = 'smtp.163.com'
+EMAIL_HOST_USER = '15989490620@163.com'
+EMAIL_HOST_PASSWORD = os.environ.get('PASSWORD')
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
