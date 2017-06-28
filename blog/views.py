@@ -17,7 +17,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 from haystack.views import SearchView
 #from haystack.forms import ModelSearchForm
 
-from blog.models import Article, Category, Tag
+from blog.models import Article, Category, Tag, SecondComment, BlogComment
 from blog.forms import BlogCommentForm, ContactForm, SearchForm
 from blog.templatetags.paginate_tags import get_left, get_right
 
@@ -161,6 +161,19 @@ class CommentPostView(FormView):
             'date_archive': date_archive,
             'recent_posts': recent_posts
         })
+
+def SencondCommentView(request):
+    if request.method == 'POST':
+        user_name = request.POST['user_name']
+        user_email = request.POST['user_email']
+        body = request.POST['body']
+        father_comment_id = request.POST['commentId']
+        father_comment = get_object_or_404(BlogComment, pk=father_comment_id)
+        comment = SecondComment(user_name=user_name, user_email=user_email, body=body)
+        comment.father_comment = father_comment
+        comment.save()
+        content = json.dumps({'status': 200})
+        return HttpResponse(content)
 
 def About(request):
     if request.method == 'GET':

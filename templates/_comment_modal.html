@@ -1,0 +1,45 @@
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					发表评论
+				</h4>
+			<div class="modal-body" id="">
+				<form class="form-horizontal comment-form">
+					<div class="form-group">
+						<label for="user_name" class="col-sm-3 control-label">用户名</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" id="user_name" name="user_name" maxlength="200">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="user_email" class="col-sm-3 control-label">邮箱</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" id="user_email" name="user_email" maxlength="200">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="user_text" class="col-sm-3 control-label">评论</label>
+						<div class="col-sm-9">
+							<textarea  class="form-control" id="user_text"
+								   placeholder="备注">
+							</textarea>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">放弃评论
+				</button>
+				<button id="commit" type="button" class="btn btn-primary">
+					评论
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>

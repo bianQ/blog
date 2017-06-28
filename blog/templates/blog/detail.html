@@ -47,14 +47,14 @@
 							<form action="{% url 'comment' article.pk %}" method="post" class="form-horizontal comment-form">
 								{% csrf_token %}
 								<div class="form-group">
-									<label for="id_name" class="col-sm-2 control-label">名字：</label>
+									<label for="id_name" class="col-sm-2 control-label">名字</label>
 									<div class="col-md-4">
 										{{ form.user_name }}
 										{% if form_errors.user_name %}
 										{{ form_errors.user_name }}
 										{% endif %}
 									</div>
-									<label for="id_email" class="col-sm-2 control-label">邮箱：</label>
+									<label for="id_email" class="col-sm-2 control-label">邮箱</label>
 									<div class="col-md-4">
 										{{ form.user_email }}
 										{% if form_errors.user_email %}
@@ -63,7 +63,7 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label for="id_text" class="col-sm-2 control-label">评论：</label>
+									<label for="id_text" class="col-sm-2 control-label">评论</label>
 									<div class="col-md-10">
 										{{ form.body }}
 									</div>
@@ -81,23 +81,26 @@
 									<li class="comment-item">
 										<span class="nickname">{{ comment.user_name }}</span>
 										<time class="submit-date">{{ comment.created_time |date:"Y年n月d日 H:m"}}</time>
-										<a class="comment" data-toggle="modal" href="#myModal">回复</a>
+										<a class="comment" data-toggle="modal" id="{{ comment.id }}" href="#myModal">回复</a>
 										<div class="text">{{ comment.body }}</div>
 										<section>
-											<header class="answer_reply_title">--- 共有 0 条评论 ---</header>
+											<header class="answer_reply_title">--- 共有 {{ comment.secondcomment_set.all|length }} 条评论 ---</header>
+											{% for secondcomment in comment.secondcomment_set.all %}
 											<blockquote class="answer_replies">
 												<div>
-													<span class="nickname">{{ comment.user_name }}</span>
-													<time class="submit-date">{{ comment.created_time |date:"Y年n月d日 H:m"}}</time>
-													<div class="text">{{ comment.body }}</div>
+													<span class="nickname">{{ secondcomment.user_name }}</span>
+													<time class="submit-date">{{ secondcomment.created_time |date:"Y年n月d日 H:m" }}</time>
+													<div class="text">{{ secondcomment.body }}</div>
 												</div>
 											</blockquote>
+											{% endfor %}
 										</section>
 									</li>
 									{% endfor %}
 								</ul>
 							</div>
 						</section>
+						{% include '_comment_modal.html' %}
 					</main>
 					{% include '_sidebar.html' %}
 				</div>
@@ -130,31 +133,58 @@
 					});
 				}
 			})
+			// 将父评论 id 传递到模态框
+			$('.comment').click(function(){
+				var commentId = $(this).attr('id');
+				$('.modal-body').attr('id', commentId);
+			})
+
+			$('#commit').click(function(){
+				var commentId = $('.modal-body').attr('id'),
+					name = $('#user_name').val(),
+					email = $('#user_email').val(),
+					text = $('#user_text').val(),
+					re_name = /^[A-Za-z][A-Za-z0-9_.]*$/;
+
+				if(!name){
+					alert('用户名不能为空');
+					return false;
+				} else if(!re_name.test(name)){
+					alert('名字只能包含字母大小写、数字、点及下划线且以字母开头');
+					return false;
+				}
+
+				if(!email){
+					alert('邮箱不能为空');
+					return false;
+				}
+				if(!text){
+					alert('评论不能为空');
+					return false;
+				}
+
+				$.ajax(
+					{
+						url: "{% url 'secondcomment' %}",
+						data: {
+							"user_name": name,
+							"user_email": email,
+							"body": text,
+							"commentId": commentId,
+							"csrfmiddlewaretoken": '{{ csrf_token }}'
+						},
+						type: "post",
+						success: function(data){
+							if(JSON.parse(data).status == 200){
+								location.reload();
+							}
+							else{
+								alert('评论失败');
+							}
+						}
+					}
+				)
+			})
 		</script>
-	<!-- 模态框（Modal） -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-					&times;
-				</button>
-				<h4 class="modal-title" id="myModalLabel">
-					发表评论
-				</h4>
-			</div>
-			<div class="modal-body">
-				在这里添加一些文本
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">关闭
-				</button>
-				<button type="button" class="btn btn-primary">
-					提交更改
-				</button>
-			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal -->
-</div>
 	</body>
 </html>

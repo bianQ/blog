@@ -79,7 +79,18 @@ class BlogComment(models.Model):
     user_email = models.EmailField('评论者邮箱', max_length=200)
     body = models.TextField('评论内容')
     created_time = models.DateTimeField('评论发表时间', auto_now_add=True)
-    article = models.ForeignKey('Article', verbose_name='评论所属文章',on_delete=models.CASCADE)
+    article = models.ForeignKey('Article', verbose_name='主评论',on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.body[:20]
+
+class SecondComment(models.Model):
+
+    user_name = models.CharField('评论者名字', max_length=200)
+    user_email = models.EmailField('评论者邮箱', max_length=200)
+    body = models.TextField('评论内容')
+    created_time = models.DateTimeField('评论发表时间', auto_now_add=True)
+    father_comment = models.ForeignKey('BlogComment', verbose_name='子评论', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.body[:20]
