@@ -27,7 +27,7 @@ urlpatterns = [
     url(r'^tag/(?P<tag_id>\d+)$', view=views.TagView.as_view(), name='tag'),
     url(r'^archive/(?P<year>\d+)/(?P<month>\d+)$', view=views.ArchiveView.as_view(), name='archive'),
     url(r'^article/(?P<article_id>\d+)/comment/$', view=views.CommentPostView.as_view(), name='comment'),
-    url(r'^secondcomment/$', view=views.SencondCommentView, name='secondcomment'),
+    url(r'^secondcomment/$', view=views.SecondCommentView, name='secondcomment'),
     url(r'^about/$', view=views.About, name='about'),
     url(r'^contact/$', view=views.ContactPostView.as_view(), name='contact'),
     url(r'^author/(?P<author>\w+)/$', view=views.AuthorView.as_view(), name='author'),

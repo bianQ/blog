@@ -91,6 +91,7 @@ class SecondComment(models.Model):
     body = models.TextField('评论内容')
     created_time = models.DateTimeField('评论发表时间', auto_now_add=True)
     father_comment = models.ForeignKey('BlogComment', verbose_name='子评论', on_delete=models.CASCADE)
+    commented = models.ForeignKey('self', verbose_name='被评论', blank=True, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.body[:20]

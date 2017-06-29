@@ -162,15 +162,19 @@ class CommentPostView(FormView):
             'recent_posts': recent_posts
         })
 
-def SencondCommentView(request):
+def SecondCommentView(request):
     if request.method == 'POST':
         user_name = request.POST['user_name']
         user_email = request.POST['user_email']
         body = request.POST['body']
         father_comment_id = request.POST['commentId']
+        commented_id = request.POST['commentedId']
         father_comment = get_object_or_404(BlogComment, pk=father_comment_id)
         comment = SecondComment(user_name=user_name, user_email=user_email, body=body)
         comment.father_comment = father_comment
+        if commented_id:
+            commented = get_object_or_404(SecondComment, pk=commented_id)
+            comment.commented = commented
         comment.save()
         content = json.dumps({'status': 200})
         return HttpResponse(content)

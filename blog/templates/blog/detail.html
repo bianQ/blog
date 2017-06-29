@@ -81,7 +81,7 @@
 									<li class="comment-item">
 										<span class="nickname">{{ comment.user_name }}</span>
 										<time class="submit-date">{{ comment.created_time |date:"Y年n月d日 H:m"}}</time>
-										<a class="comment" data-toggle="modal" id="{{ comment.id }}" href="#myModal">回复</a>
+										<a class="comment" data-toggle="modal" comment-id="{{ comment.id }}" id="" href="#myModal">回复</a>
 										<div class="text">{{ comment.body }}</div>
 										<section>
 											<header class="answer_reply_title">--- 共有 {{ comment.secondcomment_set.all|length }} 条评论 ---</header>
@@ -90,7 +90,12 @@
 												<div>
 													<span class="nickname">{{ secondcomment.user_name }}</span>
 													<time class="submit-date">{{ secondcomment.created_time |date:"Y年n月d日 H:m" }}</time>
-													<div class="text">{{ secondcomment.body }}</div>
+													<a class="comment" data-toggle="modal" comment-id="{{ comment.id }}" id="{{ secondcomment.pk }}" href="#myModal">回复</a>
+													{% if secondcomment.commented %}
+													<div class="text"><a style="color: #49ab4f;">@{{ secondcomment.commented.user_name }}: </a>{{ secondcomment.body }}</div>
+													{% else %}
+													<div class="text"><a style="color: #49ab4f;">@{{ comment.user_name }}: </a>{{ secondcomment.body }}</div>
+													{% endif %}
 												</div>
 											</blockquote>
 											{% endfor %}
@@ -133,14 +138,17 @@
 					});
 				}
 			})
-			// 将父评论 id 传递到模态框
+			// 将父评论 comment-id 和 被评论者 id 传递到模态框
 			$('.comment').click(function(){
-				var commentId = $(this).attr('id');
-				$('.modal-body').attr('id', commentId);
+				var commentId = $(this).attr('comment-id'),
+					commentedId = $(this).attr('id');
+				$('.modal-body').attr('comment-id', commentId);
+				$('.modal-body').attr('id', commentedId)
 			})
 
 			$('#commit').click(function(){
-				var commentId = $('.modal-body').attr('id'),
+				var commentId = $('.modal-body').attr('comment-id'),
+					commentedId = $('.modal-body').attr('id'),
 					name = $('#user_name').val(),
 					email = $('#user_email').val(),
 					text = $('#user_text').val(),
@@ -171,6 +179,7 @@
 							"user_email": email,
 							"body": text,
 							"commentId": commentId,
+							"commentedId": commentedId,
 							"csrfmiddlewaretoken": '{{ csrf_token }}'
 						},
 						type: "post",
