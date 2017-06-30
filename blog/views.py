@@ -5,6 +5,7 @@ import json
 import random
 import string
 import re
+import io
 
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -21,6 +22,7 @@ from blog.models import Article, Category, Tag, SecondComment, BlogComment
 from blog.forms import BlogCommentForm, ContactForm, SearchForm
 from blog.templatetags.paginate_tags import get_left, get_right
 from blog.mail import mail
+from PIL import Image
 
 
 def page_not_found(request):
@@ -297,7 +299,16 @@ def Upload(request):
             image = request.FILES['files']
             filename = image.name
             img_save_path = os.path.join(img_dir, filename)
-            default_storage.save(img_save_path, ContentFile(image.read()))
+            # 获取图片尺寸
+            img = Image.open(image)
+            # 如果图片宽大于 700px 则，等比缩小保存
+            if img.width > 700:
+                width = 700
+                height = int(img.height / (img.width / 700))
+                img = img.resize((width, height), Image.ANTIALIAS)
+                img.save(img_save_path)
+            else:
+                default_storage.save(img_save_path, ContentFile(image.read()))
 
         except MultiValueDictKeyError:
             # 粘贴接收的图片，为 base64 编码格式，还带有描述用的前缀
@@ -311,11 +322,18 @@ def Upload(request):
             # 随机生成 8 位字符串
             filename = ''.join(random.sample(strs, 8)) + '.' + image_type
             img_save_path = os.path.join(img_dir, filename)
-            # 判断目录是否存在
-            if not os.path.exists(img_dir):
-                os.makedirs(img_dir)
-            with open(img_save_path, 'wb') as file:
-                file.write(image)
+
+            # 获取图片尺寸
+            steam = io.BytesIO(image)
+            img = Image.open(steam)
+            # 如果图片宽大于 700px 则，等比缩小保存
+            if img.width > 700:
+                width = 700
+                height = int(img.height / (img.width / 700))
+                img = img.resize((width, height), Image.ANTIALIAS)
+                img.save(img_save_path)
+            else:
+                default_storage.save(img_save_path, ContentFile(image))
 
         # 客户端图片访问路径
         img_path = os.path.join(os.path.join(settings.MEDIA_URL, date), filename)
