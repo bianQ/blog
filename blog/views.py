@@ -182,6 +182,8 @@ def SecondCommentView(request):
             commented = get_object_or_404(SecondComment, pk=commented_id)
             comment.commented = commented
         comment.save()
+        # 给被评论者发送邮件提醒
+        mail.comment_mail(comment)
         # 返回请求状态码
         content = json.dumps({'status': 200})
         return HttpResponse(content)
@@ -198,7 +200,9 @@ class ContactPostView(FormView):
     def form_valid(self, form):
         form.save()
         new_form = ContactForm()
+        # 用于提交成功后的弹窗提示
         message = '感谢您的来信'
+        # 设置管理员邮箱，接收来信提醒
         to_addr = ['vagaab@foxmail.com']
         mail.contact_mail(to_addr)
         return render(self.request, 'blog/contact.html', {'form': new_form, 'message':message})
