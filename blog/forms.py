@@ -42,12 +42,15 @@ class BlogCommentForm(forms.ModelForm):
 
 class ContactForm(forms.ModelForm):
 
+    user_name = forms.CharField(validators=[validators_username], widget=forms.TextInput(attrs={
+        'placeholder':'Name'
+    }))
+
     class Meta:
 
         model = Contact
         fields = ['user_name', 'user_email', 'title', 'body']
         widgets = {
-            'user_name': forms.TextInput(attrs={'placeholder': 'Name'}),
             'user_email': forms.TextInput(attrs={'placeholder': 'Email'}),
             'title': forms.TextInput(attrs={'placeholder': 'Title'}),
             'body': forms.Textarea(attrs={'placeholder': 'Your Message'})

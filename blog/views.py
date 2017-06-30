@@ -20,6 +20,7 @@ from haystack.views import SearchView
 from blog.models import Article, Category, Tag, SecondComment, BlogComment
 from blog.forms import BlogCommentForm, ContactForm, SearchForm
 from blog.templatetags.paginate_tags import get_left, get_right
+from blog.mail import mail
 
 
 def page_not_found(request):
@@ -164,18 +165,24 @@ class CommentPostView(FormView):
 
 def SecondCommentView(request):
     if request.method == 'POST':
+        # 获取评论属性
         user_name = request.POST['user_name']
         user_email = request.POST['user_email']
         body = request.POST['body']
+        # 父评论
         father_comment_id = request.POST['commentId']
+        # 被评论
         commented_id = request.POST['commentedId']
+        # 生成子评论对象并关联父评论及被评论对象
         father_comment = get_object_or_404(BlogComment, pk=father_comment_id)
         comment = SecondComment(user_name=user_name, user_email=user_email, body=body)
         comment.father_comment = father_comment
+        # 当父评论作为被评论对象事，值为空，否则关联对应对象
         if commented_id:
             commented = get_object_or_404(SecondComment, pk=commented_id)
             comment.commented = commented
         comment.save()
+        # 返回请求状态码
         content = json.dumps({'status': 200})
         return HttpResponse(content)
 
@@ -190,10 +197,17 @@ class ContactPostView(FormView):
 
     def form_valid(self, form):
         form.save()
-        return HttpResponseRedirect('blog/contact.html')
+        new_form = ContactForm()
+        message = '感谢您的来信'
+        to_addr = ['vagaab@foxmail.com']
+        mail.contact_mail(to_addr)
+        return render(self.request, 'blog/contact.html', {'form': new_form, 'message':message})
 
     def form_invalid(self, form):
-        return render(self.request, 'blog/contact.html', {'form': form})
+        if 'user_email' in form.errors:
+            form.errors['user_email'] = '<ul class="errorlist"><li>邮箱格式错误</li></ul>'
+
+        return render(self.request, 'blog/contact.html', {'form': form, 'form_errors':form.errors})
 
 class AuthorView(ListView):
 

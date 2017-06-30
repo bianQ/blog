@@ -11,12 +11,18 @@
 						<h1 class="page-title">Contact</h1>
 						<article class="post">
 							<div class="entry-content clearfix">
-								<form action="#" method="post" class="contact-form">
+								<form action="{% url 'contact' %}" method="post" class="contact-form">
 									{% csrf_token %}
 									<div class="row">
 										<div class="col-md-6 col-md-offset-3">
 											{{ form.user_name }}
+											{% if form_errors.user_name %}
+											{{ form_errors.user_name }}
+											{% endif %}
 											{{ form.user_email }}
+											{% if form_errors.user_email %}
+											{{ form_errors.user_email |safe }}
+											{% endif %}
 											{{ form.title }}
 											{{ form.body }}
 											<button class="btn-send btn-5 btn-5b ion-ios-paperplane"><span>Drop Me a Line</span></button>
@@ -29,11 +35,22 @@
 				</div>
 			</div>
 		</div>
+		{% if message %}
+		<input id="message" type=hidden value="{{ message }}">
+		{% endif %}
+
 		{% include '_footer.html' %}
 
 		{% include '_Mobile_Menu.html' %}
 
 		<script src="{% static 'blog/js/script.js' %}"></script>
+
+		<script>
+			var message = $('#message').attr('value');
+			if(message){
+				alert(message);
+			}
+		</script>
 
 	</body>
 </html>
