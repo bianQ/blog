@@ -295,6 +295,11 @@ def Upload(request):
         date = datetime.datetime.now().strftime('%Y%m%d')
         # 本地图片保存目录
         img_dir = os.path.join(settings.MEDIA_ROOT, date)
+        # 判断目标目录是否存在，否则创建目录，如使用 Django 的文件存储工具，则可省略这一步
+        # 由于使用 PIL 导致图片不能使用 Django 提供的工具保存，所以需要额外判断目录是否存在
+        if not os.path.exists(img_dir):
+            os.mkdir(img_dir)
+
         try:
             image = request.FILES['files']
             filename = image.name
@@ -308,9 +313,10 @@ def Upload(request):
                 img = img.resize((width, height), Image.ANTIALIAS)
                 img.save(img_save_path)
             else:
-                default_storage.save(img_save_path, ContentFile(image.read()))
+                img.save(img_save_path)
+                #default_storage.save(img_save_path, ContentFile(image.read()))
 
-        except MultiValueDictKeyError:
+        except KeyError:
             # 粘贴接收的图片，为 base64 编码格式，还带有描述用的前缀
             head, image = request.POST['image'].split(',')
             # 用正则从前缀中匹配文件的类型
@@ -333,7 +339,8 @@ def Upload(request):
                 img = img.resize((width, height), Image.ANTIALIAS)
                 img.save(img_save_path)
             else:
-                default_storage.save(img_save_path, ContentFile(image))
+                img.save(img_save_path)
+                #default_storage.save(img_save_path, ContentFile(image))
 
         # 客户端图片访问路径
         img_path = os.path.join(os.path.join(settings.MEDIA_URL, date), filename)
