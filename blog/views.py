@@ -205,7 +205,7 @@ class ContactPostView(FormView):
         # 用于提交成功后的弹窗提示
         message = '感谢您的来信'
         # 设置管理员邮箱，接收来信提醒
-        to_addr = ['vagaab@foxmail.com']
+        to_addr = ['vagaab@foxmail.com', '1126166129@qq.com']
         mail.contact_mail(to_addr)
         return render(self.request, 'blog/contact.html', {'form': new_form, 'message':message})
 
