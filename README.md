@@ -1,3 +1,3 @@
 # blog
 
-> [博客网址](https://blog.admcenter.cn)
+> [示例](https://blog.admcenter.cn)
