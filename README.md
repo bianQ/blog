@@ -1,2 +1,2 @@
 # blog
-for studying django and not forget it
+> [博客网址](https://blog.admcenter.cn)
